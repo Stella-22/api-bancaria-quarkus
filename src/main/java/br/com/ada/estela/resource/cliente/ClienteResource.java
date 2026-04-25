@@ -30,34 +30,31 @@ public class ClienteResource {
             @Valid ClienteDTO clienteDTO,
             @Context UriInfo uriInfo) {
 
-        Cliente cliente = clienteService.cadastrar(clienteDTO);
+        ClienteDTO cliente = clienteService.cadastrar(clienteDTO);
         URI location = uriInfo.getAbsolutePathBuilder()
-                .path(cliente.id.toString())
+                .path(cliente.getId().toString())
                 .build();
         return Response.created(location)
-                .entity(toResponse(cliente))
+                .entity(cliente)
                 .build();
     }
 
     @GET
     @RolesAllowed("GERENTE")
     public Response buscar() {
-        List<Cliente> clientes = clienteService.buscarTodos();
-        List<ClienteDTO> dtos = clientes.stream()
-                .map(this::toResponse)
-                .toList();
-        return Response.ok(dtos).build();
+        List<ClienteDTO> clientes = clienteService.buscarTodos();
+        return Response.ok(clientes).build();
     }
 
     @GET
     @Path("/{id}")
     @RolesAllowed("GERENTE")
     public Response buscarPorId(@PathParam("id") Long id) {
-        Cliente cliente = clienteService.buscarPorId(id);
+        ClienteDTO cliente = clienteService.buscarPorId(id);
         if (cliente == null) {
             throw new NotFoundException("Cliente com id " + id + " nao encontrado");
         }
-        return Response.ok(toResponse(cliente)).build();
+        return Response.ok(cliente).build();
     }
 
     @PUT
@@ -66,16 +63,9 @@ public class ClienteResource {
     @Transactional
     public Response atualizar(@PathParam("id") Long id, @Valid ClienteDTO clienteDTO) {
 
-        Cliente cliente = clienteService.atualizar(id, clienteDTO);
-        return Response.ok(toResponse(cliente)).build();
+        ClienteDTO cliente = clienteService.atualizar(id, clienteDTO);
+        return Response.ok(cliente).build();
     }
 
-    private ClienteDTO toResponse(Cliente cliente) {
-        ClienteDTO dto = new ClienteDTO();
-        dto.setId(cliente.id);
-        dto.setNome(cliente.getNome());
-        dto.setEmail(cliente.getUsuario().getEmail());
-        return dto;
-    }
 
 }

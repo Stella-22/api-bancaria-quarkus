@@ -4,6 +4,8 @@ import br.com.ada.estela.enums.TipoConta;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 public class Conta extends PanacheEntityBase {
 
@@ -22,6 +24,11 @@ public class Conta extends PanacheEntityBase {
     @JoinColumn(name = "client_id", nullable = false)
     private Cliente cliente;
 
+    private BigDecimal saldo;
+
+    public Conta() {
+        saldo = BigDecimal.ZERO;
+    }
 
     public Long getId() {
         return id;
@@ -53,5 +60,13 @@ public class Conta extends PanacheEntityBase {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public BigDecimal getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(BigDecimal saldo) {
+        this.saldo = saldo;
     }
 }

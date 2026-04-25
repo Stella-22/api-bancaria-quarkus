@@ -1,22 +1,23 @@
 package br.com.ada.estela.service;
 
-import br.com.ada.estela.model.Usuario;
+import br.com.ada.estela.model.Cliente;
 import br.com.ada.estela.resource.auth.AuthResponse;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.NotAuthorizedException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.jboss.logging.Logger;
 
 import java.time.Duration;
-import java.util.Optional;
+
 
 @ApplicationScoped
 public class AuthService {
+
+    private static final Logger LOG = Logger.getLogger(AuthService.class);
 
     @ConfigProperty(name = "mp.jwt.verify.issuer")
     String issuer;
@@ -33,27 +34,30 @@ public class AuthService {
     }
 
     public AuthResponse autenticar(String email, String senha) {
-        Usuario usuario = Usuario.find("email", email).firstResult();
-        validarSenha(usuario,senha);
-        String token = gerarToken(usuario);
+
+        LOG.infof("Tentativa de login para username='%s'", email);
+        Cliente cliente = Cliente.find("email", email).firstResult();
+        validarSenha(cliente,senha);
+        String token = gerarToken(cliente);
+        LOG.infof("Login bem-sucedido para username='%s'", email);
         return new AuthResponse(token);
     }
 
-    private void validarSenha(Usuario user, String password) {
-        boolean approve = user != null
-                && argon2.verify(user.getSenha(), password.toCharArray());
+    private void validarSenha(Cliente cliente, String password) {
+        boolean approve = cliente != null
+                && argon2.verify(cliente.getSenha(), password.toCharArray());
 
         if (!approve) {
             throw new NotAuthorizedException("Credenciais invalidas");
         }
     }
 
-    private String gerarToken(Usuario usuario) {
+    private String gerarToken(Cliente cliente) {
         return Jwt.issuer(issuer)
-                .upn(usuario.getEmail())
-                .groups(usuario.getRole().name())
-                .claim("usuarioId", usuario.id)
-                .claim("nome", usuario.getNome())
+                .upn(cliente.getEmail())
+                .groups(cliente.getRole().name())
+                .claim("clienteId", cliente.id)
+                .claim("nome", cliente.getNome())
                 .expiresIn(Duration.ofMinutes(30))
                 .sign();
     }

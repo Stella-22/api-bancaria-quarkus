@@ -3,9 +3,8 @@ package br.com.ada.estela.model;
 import br.com.ada.estela.enums.TipoTransacao;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 public class Transacao extends PanacheEntityBase {
@@ -21,8 +20,8 @@ public class Transacao extends PanacheEntityBase {
     @Column(nullable = false)
     private BigDecimal valor;
 
-    @Column(nullable = false)
-    private LocalTime dataHora;
+    @Column(columnDefinition = "timestamp(6) without time zone")
+    private LocalDateTime dataHora;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "conta_origem_id", nullable = false)
@@ -57,11 +56,11 @@ public class Transacao extends PanacheEntityBase {
         this.valor = valor;
     }
 
-    public LocalTime getDataHora() {
+    public LocalDateTime getDataHora() {
         return dataHora;
     }
 
-    public void setDataHora(LocalTime dataHora) {
+    public void setDataHora(LocalDateTime dataHora) {
         this.dataHora = dataHora;
     }
 

@@ -1,5 +1,6 @@
 package br.com.ada.estela.model;
 
+import br.com.ada.estela.enums.PerfilUsuario;
 import jakarta.persistence.*;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -14,11 +15,17 @@ public class Cliente extends PanacheEntityBase {
     private String nome;
 
     @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String senha;
+
+    @Column(nullable = false)
     private String cpf;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    private Usuario usuario;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PerfilUsuario role;
 
     public Long getId() {
         return id;
@@ -36,6 +43,22 @@ public class Cliente extends PanacheEntityBase {
         this.nome = nome;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     public String getCpf() {
         return cpf;
     }
@@ -44,11 +67,11 @@ public class Cliente extends PanacheEntityBase {
         this.cpf = cpf;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public PerfilUsuario getRole() {
+        return role;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setRole(PerfilUsuario role) {
+        this.role = role;
     }
 }

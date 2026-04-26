@@ -5,7 +5,6 @@ import br.com.ada.estela.model.Transacao;
 import br.com.ada.estela.resource.Link;
 import br.com.ada.estela.resource.conta.ContaDTO;
 import jakarta.ws.rs.core.UriInfo;
-
 import java.util.List;
 
 public class ContaMapper {
@@ -18,7 +17,6 @@ public class ContaMapper {
         dto.setNumero(conta.getNumero());
         dto.setTipo(conta.getTipo());
         dto.setTitular(ClienteMapper.toDTO(conta.getCliente()));
-        dto.setSaldo(conta.getSaldo());
         if (transacoes != null) {
             dto.setTransacoes(TransacaoMapper.toDTO(transacoes));
             dto.setLinks(new Link("transacoes",
@@ -37,7 +35,6 @@ public class ContaMapper {
         conta.setNumero(dto.getNumero());
         conta.setTipo(dto.getTipo());
         conta.setCliente(ClienteMapper.toEntity(dto.getTitular()));
-        conta.setSaldo(dto.getSaldo());
         return conta;
     }
 }

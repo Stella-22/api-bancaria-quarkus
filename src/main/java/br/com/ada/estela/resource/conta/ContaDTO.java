@@ -7,8 +7,6 @@ import br.com.ada.estela.resource.transacao.TransacaoDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,7 +22,6 @@ public class ContaDTO {
 
     private String numero;
 
-    private BigDecimal saldo;
 
     private List<TransacaoDTO> transacoes;
 
@@ -61,14 +58,6 @@ public class ContaDTO {
 
     public void setNumero(String numero) {
         this.numero = numero;
-    }
-
-    public BigDecimal getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(BigDecimal saldo) {
-        this.saldo = saldo;
     }
 
     public List<TransacaoDTO> getTransacoes() {

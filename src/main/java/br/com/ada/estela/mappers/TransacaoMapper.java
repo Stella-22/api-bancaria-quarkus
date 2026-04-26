@@ -16,6 +16,8 @@ public class TransacaoMapper {
         dto.setValor(transacao.getValor());
         dto.setTipo(transacao.getTipo());
         dto.setDataHora(transacao.getDataHora());
+        dto.setConta(ContaMapper.toDTO(transacao.getContaOrigem(), null, null));
+        dto.setContaDestino(ContaMapper.toDTO(transacao.getContaDestino(), null, null));
         return dto;
     }
 
@@ -40,13 +42,13 @@ public class TransacaoMapper {
                 .toList();
     }
 
-        public static List<Transacao> toEntity(List<TransacaoDTO> dtos) {
-            if (dtos == null) {
-                return null;
-            }
-            return dtos.stream()
-                    .map(TransacaoMapper::toEntity)
-                    .toList();
+    public static List<Transacao> toEntity(List<TransacaoDTO> dtos) {
+        if (dtos == null) {
+            return null;
         }
+        return dtos.stream()
+                .map(TransacaoMapper::toEntity)
+                .toList();
+    }
 
 }

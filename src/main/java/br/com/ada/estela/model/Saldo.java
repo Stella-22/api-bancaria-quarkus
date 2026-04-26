@@ -3,25 +3,24 @@ package br.com.ada.estela.model;
 import br.com.ada.estela.enums.TipoConta;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Immutable;
+
+import java.math.BigDecimal;
 
 @Entity
-public class Conta extends PanacheEntityBase {
+@Immutable
+@Table(name = "view_saldo")
+public class Saldo extends PanacheEntityBase {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
-    @Column(nullable = false)
     private String numero;
 
-    @Enumerated (EnumType.STRING)
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private TipoConta tipo;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
-
+    private BigDecimal saldo;
 
     public Long getId() {
         return id;
@@ -47,12 +46,12 @@ public class Conta extends PanacheEntityBase {
         this.tipo = tipo;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public BigDecimal getSaldo() {
+        return saldo;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setSaldo(BigDecimal saldo) {
+        this.saldo = saldo;
     }
-
 }
+

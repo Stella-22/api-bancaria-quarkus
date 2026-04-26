@@ -1,6 +1,5 @@
 package br.com.ada.estela.resource.cliente;
 
-import br.com.ada.estela.model.Cliente;
 import br.com.ada.estela.service.ClienteService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -11,7 +10,6 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
-
 import java.net.URI;
 import java.util.List;
 
@@ -61,11 +59,10 @@ public class ClienteResource {
     @Path("/{id}")
     @RolesAllowed("GERENTE")
     @Transactional
-    public Response atualizar(@PathParam("id") Long id, @Valid ClienteDTO clienteDTO) {
+    public Response atualizar(@PathParam("id") Long id, ClienteDTO clienteDTO) {
 
         ClienteDTO cliente = clienteService.atualizar(id, clienteDTO);
         return Response.ok(cliente).build();
     }
-
 
 }

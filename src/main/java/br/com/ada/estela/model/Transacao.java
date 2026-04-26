@@ -20,7 +20,7 @@ public class Transacao extends PanacheEntityBase {
     @Column(nullable = false)
     private BigDecimal valor;
 
-    @Column(columnDefinition = "timestamp(6) without time zone")
+    @Column(name = "data_hora", columnDefinition = "timestamp(6) without time zone")
     private LocalDateTime dataHora;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)

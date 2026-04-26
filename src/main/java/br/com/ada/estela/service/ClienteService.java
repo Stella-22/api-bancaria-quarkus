@@ -6,7 +6,6 @@ import br.com.ada.estela.model.Cliente;
 import br.com.ada.estela.resource.cliente.ClienteDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.validation.Valid;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
@@ -40,18 +39,26 @@ public class ClienteService {
         return ClienteMapper.toDTO(Cliente.findById(id));
     }
 
-    public ClienteDTO atualizar(Long id, @Valid ClienteDTO clienteDTO) {
+    public ClienteDTO atualizar(Long id, ClienteDTO clienteDTO) {
         Cliente cliente = Cliente.findById(id);
         if (cliente == null) {
             throw new NotFoundException("Cliente com id " + id + " nao encontrado");
         }
-        if (!cliente.getCpf().equals(clienteDTO.getCpf())) {
+        if (clienteDTO.getCpf() != null &&
+                !clienteDTO.getCpf().isBlank() &&
+                !cliente.getCpf().equals(clienteDTO.getCpf())) {
             throw new BadRequestException("CPF nao pode ser alterado");
         }
 
-        cliente.setNome(clienteDTO.getNome().trim());
-        cliente.setEmail(clienteDTO.getEmail());
-        cliente.setSenha(authService.hashPassword(clienteDTO.getSenha()));
+        if (clienteDTO.getNome() != null && !clienteDTO.getNome().isBlank()) {
+            cliente.setNome(clienteDTO.getNome().trim());
+        }
+        if (clienteDTO.getEmail() != null && !clienteDTO.getEmail().isBlank() && clienteDTO.getEmail().contains("@")) {
+            cliente.setEmail(clienteDTO.getEmail());
+        }
+        if (clienteDTO.getSenha() != null && !clienteDTO.getSenha().isBlank()) {
+            cliente.setSenha(authService.hashPassword(clienteDTO.getSenha()));
+        }
         cliente.persist();
         return ClienteMapper.toDTO(cliente);
 

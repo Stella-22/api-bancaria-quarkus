@@ -20,7 +20,7 @@ Git
 #Passo a Passo
 1. Clone o repositório
 
-   git clone https://github.com/seu-usuario/api-bancaria-quarkus.git
+   git clone https://github.com/Stella-22/api-bancaria-quarkus.git
    cd api-bancaria-quarkus
 
 2. Inicie o banco de dados PostgreSQL

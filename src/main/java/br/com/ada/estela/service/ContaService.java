@@ -50,7 +50,7 @@ public class ContaService {
     }
 
     public String gerarNumeroConta(TipoConta tipo) {
-        long sequencial = proximoSequencial(); // busca o próximo número
+        long sequencial = proximoSequencial();
         return String.format("%04d-%d", sequencial, tipo.getDigito());
     }
 

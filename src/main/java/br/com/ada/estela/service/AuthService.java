@@ -1,4 +1,5 @@
 package br.com.ada.estela.service;
+
 import br.com.ada.estela.model.Cliente;
 import br.com.ada.estela.resource.auth.AuthResponse;
 import io.smallrye.jwt.build.Jwt;
@@ -7,7 +8,6 @@ import jakarta.ws.rs.NotAuthorizedException;
 import org.jboss.logging.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-
 import java.time.Duration;
 
 @ApplicationScoped
@@ -18,10 +18,9 @@ public class AuthService {
     @ConfigProperty(name = "mp.jwt.verify.issuer")
     String issuer;
 
-    // Removidos: Argon2, @PostConstruct e init()
 
     public String hashPassword(String password) {
-        // Gera hash compatível com pgcrypto bcrypt (fator 10)
+
         return BCrypt.hashpw(password, BCrypt.gensalt(10));
     }
 
@@ -35,7 +34,7 @@ public class AuthService {
     }
 
     private void validarSenha(Cliente cliente, String password) {
-        // BCrypt.checkpw verifica a senha contra o hash $2a$10$... do banco
+
         boolean aprovado = cliente != null
                 && BCrypt.checkpw(password, cliente.getSenha());
 

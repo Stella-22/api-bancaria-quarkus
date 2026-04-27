@@ -6,7 +6,6 @@ import br.com.ada.estela.model.Transacao;
 import br.com.ada.estela.resource.transacao.TransacaoDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.NotFoundException;
-
 import java.util.List;
 
 

@@ -4,7 +4,6 @@ import br.com.ada.estela.enums.TipoConta;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Immutable;
-
 import java.math.BigDecimal;
 
 @Entity

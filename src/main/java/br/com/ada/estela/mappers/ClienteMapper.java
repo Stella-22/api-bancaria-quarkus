@@ -23,6 +23,7 @@ public class ClienteMapper {
         cliente.setId(dto.getId());
         cliente.setNome(dto.getNome());
         cliente.setCpf(dto.getCpf());
+        cliente.setEmail(dto.getEmail());
         return cliente;
     }
 }

@@ -23,12 +23,12 @@ public class Transacao extends PanacheEntityBase {
     @Column(name = "data_hora", columnDefinition = "timestamp(6) without time zone")
     private LocalDateTime dataHora;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "conta_origem_id", nullable = false)
+    @ManyToOne(optional = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "conta_origem_id")
     private Conta contaOrigem;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "conta_destino_id", nullable = false)
+    @ManyToOne(optional = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "conta_destino_id")
     private Conta contaDestino;
 
 

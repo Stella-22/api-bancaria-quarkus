@@ -3,6 +3,7 @@ package br.com.ada.estela.service;
 import br.com.ada.estela.enums.PerfilUsuario;
 import br.com.ada.estela.mappers.ClienteMapper;
 import br.com.ada.estela.model.Cliente;
+import br.com.ada.estela.repository.ClienteRepository;
 import br.com.ada.estela.resource.cliente.ClienteDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -16,6 +17,9 @@ public class ClienteService {
     @Inject
     private AuthService authService;
 
+    @Inject
+    private ClienteRepository clienteRepository;
+
     public ClienteDTO cadastrar(ClienteDTO clienteDTO) {
 
         Cliente cliente = new Cliente();
@@ -24,22 +28,22 @@ public class ClienteService {
         cliente.setEmail(clienteDTO.getEmail());
         cliente.setSenha(authService.hashPassword(clienteDTO.getSenha()));
         cliente.setRole(PerfilUsuario.CLIENTE);
-        cliente.persist();
+        clienteRepository.persist(cliente);
         return ClienteMapper.toDTO(cliente);
     }
 
     public List<ClienteDTO> buscarTodos() {
-        return Cliente.findAll().stream()
+        return clienteRepository.findAll().stream()
                 .map(c -> ClienteMapper.toDTO((Cliente) c))
                 .toList();
     }
 
     public ClienteDTO buscarPorId(Long id) {
-        return ClienteMapper.toDTO(Cliente.findById(id));
+        return ClienteMapper.toDTO(clienteRepository.findById(id));
     }
 
     public ClienteDTO atualizar(Long id, ClienteDTO clienteDTO) {
-        Cliente cliente = Cliente.findById(id);
+        Cliente cliente = clienteRepository.findById(id);
         if (cliente == null) {
             throw new NotFoundException("Cliente com id " + id + " nao encontrado");
         }
@@ -58,7 +62,7 @@ public class ClienteService {
         if (clienteDTO.getSenha() != null && !clienteDTO.getSenha().isBlank()) {
             cliente.setSenha(authService.hashPassword(clienteDTO.getSenha()));
         }
-        cliente.persist();
+        clienteRepository.persist(cliente);
         return ClienteMapper.toDTO(cliente);
 
     }
